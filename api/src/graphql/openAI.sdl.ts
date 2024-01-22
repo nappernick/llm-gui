@@ -4,11 +4,13 @@ export const schema = gql`
   type Model {
     id: String!
     object: String!
-    created_at: Int!
+    created: Int!
     owned_by: String!
-    root: String
-    parent: String
-    permission: [ModelPermission!]!
+  }
+
+  type Query {
+    listModels: [Model!]!
+    retrieveModel(modelId: String!): Model!
   }
 
   type ModelPermission {

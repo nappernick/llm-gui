@@ -22,3 +22,10 @@ export const listModels = async (): Promise<OpenAI.Model[]> => {
   const response = await openai.models.list()
   return response.data
 }
+
+export const retrieveModel = async (modelId: string) => {
+  {
+    const model = await openai.models.retrieve(modelId)
+    return model
+  }
+}

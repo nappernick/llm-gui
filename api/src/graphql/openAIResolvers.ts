@@ -1,9 +1,16 @@
-import { listModels, sendMessage } from '../services/openAI/openAI'
+import {
+  listModels,
+  sendMessage,
+  retrieveModel,
+} from '../services/openAI/openAI'
 
 export const resolvers = {
   Query: {
     listModels: () => {
       return listModels()
+    },
+    retrieveModel: (_parent, { modelId }) => {
+      return retrieveModel(modelId)
     },
     // ... other resolvers
   },
