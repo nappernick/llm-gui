@@ -7,7 +7,7 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/core": "6.6.2"
+    "@redwoodjs/core": "6.6.4"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
@@ -20,5 +20,18 @@
   "prisma": {
     "seed": "yarn rw exec seed"
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.0.2",
+  "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.6",
+    "@mui/material": "^5.15.6",
+    "@mui/styled-engine": "^5.15.5",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.12",
+    "mongodb": "^6.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "styled-components": "^6.1.8"
+  }
 }

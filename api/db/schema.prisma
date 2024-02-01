@@ -1,3 +1,5 @@
+// api/db/schema.prisma
+
 // Don't forget to tell Prisma about your edits to this file using
 // `yarn rw prisma migrate dev` or `yarn rw prisma db push`.
 // `migrate` is like committing while `push` is for prototyping.
@@ -5,23 +7,16 @@
 // https://www.prisma.io/docs/orm/prisma-migrate
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = "postgresql://nickfmatthews:lShCcLoJx9M2@ep-withered-cloud-a5i8gdon.us-east-2.aws.neon.tech/neondb?sslmode=require"
 }
+
 
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = "native"
 }
 
-// Define your own datamodels here and run `yarn redwood prisma migrate dev`
-// to create migrations for them and apply to your dev DB.
-// TODO: Please remove the following example:
-model UserExample {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-}
 
 model OpenAIInteraction {
   id        Int      @id @default(autoincrement())
@@ -30,3 +25,24 @@ model OpenAIInteraction {
   createdAt DateTime @default(now())
 }
 
+model FileUpload {
+  id        String   @id @default(uuid())
+  title     String
+  url       String
+  keywords  String[]
+  createdAt DateTime @default(now())
+}
+
+
+model Embedding {
+  id     Int    @id @default(autoincrement())
+  text   String
+  vector String
+}
+
+model Thread {
+  id         String    @id @default(uuid())
+  object     String
+  createdAt  Int
+  metadata   Json
+}

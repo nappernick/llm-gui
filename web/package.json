@@ -12,17 +12,24 @@
   },
   "dependencies": {
     "@huggingface/inference": "^2.6.4",
+    "@material-ui/core": "^4.12.4",
     "@mistralai/mistralai": "^0.0.10",
-    "@redwoodjs/forms": "6.6.2",
-    "@redwoodjs/router": "6.6.2",
-    "@redwoodjs/web": "6.6.2",
+    "@mui/styles": "^5.15.6",
+    "@redwoodjs/forms": "6.6.4",
+    "@redwoodjs/router": "6.6.4",
+    "@redwoodjs/web": "6.6.4",
+    "cross-fetch": "^4.0.0",
+    "filestack-react": "^5.0.0",
     "openai": "^4.25.0",
     "prop-types": "15.8.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0",
+    "styled-components": "^6.1.8"
   },
   "devDependencies": {
-    "@redwoodjs/vite": "6.6.2",
+    "@redwoodjs/vite": "6.6.4",
     "@types/react": "18.2.37",
     "@types/react-dom": "18.2.15"
   }

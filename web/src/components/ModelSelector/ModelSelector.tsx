@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react'
 
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+
 import { useQuery } from '@redwoodjs/web'
 
 const RETRIEVE_MODEL_QUERY = gql`
@@ -9,7 +11,6 @@ const RETRIEVE_MODEL_QUERY = gql`
     retrieveModel(modelId: $modelId) {
       id
       object
-      created
       owned_by
     }
   }
@@ -26,48 +27,83 @@ const MODEL_LIST_QUERY = gql`
 `
 
 const ModelSelector = ({ onModelSelect }) => {
-  const { data, loading, error } = useQuery(MODEL_LIST_QUERY)
+  // Use the new queries alongside the existing ones
+  const {
+    data: listModelsData,
+    loading: listModelsLoading,
+    error: listModelsError,
+  } = useQuery(MODEL_LIST_QUERY)
 
   const [selectedModel, setSelectedModel] = useState('')
   const {
-    data: retrieveData,
-    loading: retrieveLoading,
-    error: retrieveError,
+    data: retrieveModelData,
+    loading: retrieveModelLoading,
+    error: retrieveModelError,
   } = useQuery(RETRIEVE_MODEL_QUERY, {
     variables: { modelId: selectedModel },
     skip: !selectedModel,
   })
 
+  // Combine loading and error states
   const isLoading = useMemo(
-    () => loading || retrieveLoading,
-    [loading, retrieveLoading]
+    () => listModelsLoading || retrieveModelLoading,
+    [listModelsLoading, retrieveModelLoading]
   )
 
-  const isError = useMemo(() => error || retrieveError, [error, retrieveError])
+  const isError = useMemo(
+    () => listModelsError || retrieveModelError,
+    [listModelsError, retrieveModelError]
+  )
 
-  const handleChange = (event) => {
-    const model = event.target.value
-    setSelectedModel(model)
-    onModelSelect(model)
+  const modelName = (modelName) => {
+    if (modelName === 'ft:gpt-3.5-turbo-1106:napperindustries::8m6J8w1K') {
+      modelName = 'gpt-3.5-nestjs'
+    }
+    if (modelName === 'ft:gpt-3.5-turbo-1106:napperindustries::8mHyOalx') {
+      modelName = 'gpt-3.5-serverless'
+    }
+    return modelName
   }
 
-  useEffect(() => {
-    if (retrieveData && retrieveData.retrieveModel) {
-      onModelSelect(retrieveData.retrieveModel)
+  // Handle changes for both models and assistants
+  const handleChange = (event) => {
+    console.log('event.target.name', event.target)
+    const value = event.target.value
+    if (event.target.name === 'modelSelector') {
+      setSelectedModel(value)
+      onModelSelect(value, 'model')
     }
-  }, [retrieveData, onModelSelect])
+  }
+
+  // Trigger callbacks when data is retrieved
+  useEffect(() => {
+    if (retrieveModelData && retrieveModelData.retrieveModel) {
+      onModelSelect(retrieveModelData.retrieveModel.id, 'model')
+    }
+  }, [retrieveModelData, onModelSelect])
 
   if (isLoading) return 'Loading...'
-  if (isError) return `Error: ${error.message}`
+  if (isError) return `Error: ${isError.message}`
 
   return (
-    <select value={selectedModel} onChange={handleChange}>
-      {data.listModels.map((model) => (
-        <option key={model.id} value={model.id}>
-          {model.id} {/* Display model ID or any other identifier */}
-        </option>
-      ))}
-    </select>
+    <FormControl fullWidth>
+      <InputLabel id="assistant-selector-label">Select Model</InputLabel>
+      <Select
+        name="modelSelector"
+        value={selectedModel}
+        onChange={handleChange}
+        label="Select Model"
+      >
+        {listModelsData?.listModels.map((model) => {
+          return (
+            <MenuItem key={model.id} value={model.id}>
+              {modelName(model.id)}{' '}
+              {/* Display model ID or any other identifier */}
+            </MenuItem>
+          )
+        })}
+      </Select>
+    </FormControl>
   )
 }
 
